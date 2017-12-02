@@ -15,10 +15,14 @@ var Game = {
   // create a canvas
   _currentScreen: null,
   // methods: enter, exit, render, handleInput
+  _screenWidth: 80,
+  _screenHeight: 20,
 
   get getDisplay () { return this._display },
   get getDevelop () { return this._develop },
   get getCurrentScreen () { return this._currentScreen },
+  get getScreenWidth () { return this._screenWidth },
+  get getScreenHeight () { return this._screenHeight },
 
   set setDevelop (develop) { this._develop = develop },
   set setDisplay (display) { this._display = display },
@@ -28,12 +32,15 @@ var Game = {
 Game.init = function () {
   // update object: _display <-- blank canvas
   // listen events: keyboard
-  this.setDisplay = new ROT.Display({ width: 80, height: 20 })
-  let game = this
+  this.setDisplay = new ROT.Display({
+    width: Game.getScreenWidth,
+    height: Game.getScreenHeight
+  })
+  let tmpObject = this
   function bindEventToScreen (eventType) {
     window.addEventListener(eventType, function (event) {
-      if (game.getCurrentScreen !== null) {
-        game.getCurrentScreen.handleInput(eventType, event)
+      if (tmpObject.getCurrentScreen !== null) {
+        tmpObject.getCurrentScreen.handleInput(eventType, event)
       }
     })
   }
