@@ -10,7 +10,7 @@
  */
 
 var Game = {
-  _develop: null,
+  _develop: false,
   _display: null,
   // create a canvas
   _currentScreen: null,
@@ -18,19 +18,22 @@ var Game = {
 
   get getDisplay () { return this._display },
   get getDevelop () { return this._develop },
-  set setDevelop (develop) { this._develop = develop }
+  get getCurrentScreen () { return this._currentScreen },
+
+  set setDevelop (develop) { this._develop = develop },
+  set setDisplay (display) { this._display = display },
+  set setCurrentScreen (currentScreen) { this._currentScreen = currentScreen }
 }
 
 Game.init = function () {
   // update object: _display <-- blank canvas
   // listen events: keyboard
-  this._display = new ROT.Display({ width: 80, height: 20 })
-  // this._display = new ROT.Display({ width: 80, height: 20 })
+  this.setDisplay = new ROT.Display({ width: 80, height: 20 })
   let game = this
   function bindEventToScreen (eventType) {
     window.addEventListener(eventType, function (event) {
-      if (game._currentScreen !== null) {
-        game._currentScreen.handleInput(eventType, event)
+      if (game.getCurrentScreen !== null) {
+        game.getCurrentScreen.handleInput(eventType, event)
       }
     })
   }
@@ -41,21 +44,20 @@ Game.init = function () {
 
 Game.switchScreen = function (screen) {
   // exit old screen
-  if (this._currentScreen !== null) {
-    this._currentScreen.exit()
+  if (this.getCurrentScreen !== null) {
+    this.getCurrentScreen.exit()
   }
-  this._display.clear()
+  this.getDisplay.clear()
   // draw new screen
-  this._currentScreen = screen
-  if (this._currentScreen !== null) {
-    this._currentScreen.enter()
-    this._currentScreen.render(this._display)
+  this.setCurrentScreen = screen
+  if (this.getCurrentScreen !== null) {
+    this.getCurrentScreen.enter()
+    this.getCurrentScreen.render(this._display)
   }
 }
 
 window.onload = function () {
   Game.setDevelop = true
-  // Game.setDevelop = false
   console.log('Develop Mode: ' + Game.getDevelop)
   if (ROT.isSupported()) {
     console.log('ready to go')
@@ -66,5 +68,5 @@ window.onload = function () {
 
   Game.init()
   document.body.appendChild(Game.getDisplay.getContainer())
-  Game.switchScreen(Game.Screen.start)
+  Game.switchScreen(Game.Screen.startScreen)
 }
