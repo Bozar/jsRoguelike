@@ -33,8 +33,8 @@ var Game = {
   get getFloorIsCell () { return this._floorIsCell }
 }
 
-Game.convertBoolToNum = function (boolVariable) {
-  return boolVariable === true ? 1 : 0
+Game.convertBoolToNum = function (boolValue) {
+  return boolValue === true ? 1 : 0
 }
 
 Game.init = function () {

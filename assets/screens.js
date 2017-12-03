@@ -67,8 +67,21 @@ Game.Screen.playScreen.enter = function () {
   this._map = new Game.Map(map)
 }
 Game.Screen.playScreen.render = function (display) {
-  // display.drawText(1, 1, 'Press [Enter] to win')
-  // display.drawText(1, 2, 'Press [Esc] to lose')
+  /**
+   * map: a big square in the fixed position
+   * screen: a small, moving window
+   *
+   * use this equation to get screen.left:
+   *  screen.left + screen.width/2 = screen.center
+   *
+   * boundary condition: screen move out of the window
+   *  left boundary:
+   *    screen.left >= 0
+   *    <==> screen.left = max((screen.center - screen.width/2), 0)
+   *  right boundary:
+   *    screen.left + screen.width <= map.width
+   *    <==> screen.left = min(screen.left, (map,width - screen.width))
+   */
   for (let x = 0; x < this._map.getWidth(); x++) {
     for (let y = 0; y < this._map.getHeight(); y++) {
       let glyph = this._map.getTile(x, y).getGlyph()
@@ -77,6 +90,8 @@ Game.Screen.playScreen.render = function (display) {
     }
   }
   this.informText('Map drawn')
+  this.informText('Press [Enter] to win')
+  this.informText('Press [Esc] to lose')
 }
 Game.Screen.playScreen.handleInput = function (eventType, inputKey) {
   if (eventType === 'keydown') {
