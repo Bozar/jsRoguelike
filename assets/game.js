@@ -10,17 +10,31 @@
  */
 
 var Game = {
-  _develop: false,
+  _develop: true,
   _display: null,
   // create a canvas
   _currentScreen: null,
   // methods: enter, exit, render, handleInput
   _screenWidth: 80,
   _screenHeight: 20,
+  _cellIterations: 4,
+  _cellSurvive: 0.5,
+  // _floorIsCell: true,
+  _floorIsCell: false,
 
-  get getDevelop () { return this._develop },
+  get getDevelop () {
+    this._develop = this._develop === true
+    return this._develop
+  },
+  get getScreenWidth () { return this._screenWidth },
+  get getScreenHeight () { return this._screenHeight },
+  get getCellIterations () { return this._cellIterations },
+  get getCellSurvive () { return this._cellSurvive },
+  get getFloorIsCell () { return this._floorIsCell }
+}
 
-  set setDevelop (develop) { this._develop = develop }
+Game.convertBoolToNum = function (boolVariable) {
+  return boolVariable === true ? 1 : 0
 }
 
 Game.init = function () {
@@ -47,7 +61,7 @@ Game.switchScreen = function (screen) {
   // exit old screen
   if (this._currentScreen !== null) {
     this._currentScreen.exit()
-    this._currentScreen.informExit()
+    this._currentScreen.informText('Exit screen')
   }
   this._display.clear()
   // draw new screen
@@ -55,12 +69,11 @@ Game.switchScreen = function (screen) {
   if (this._currentScreen !== null) {
     this._currentScreen.enter()
     this._currentScreen.render(this._display)
-    this._currentScreen.informEnter()
+    this._currentScreen.informText('Enter screen')
   }
 }
 
 window.onload = function () {
-  Game.setDevelop = true
   console.log('Develop Mode: ' + Game.getDevelop)
   if (ROT.isSupported()) {
     console.log('ready to go')

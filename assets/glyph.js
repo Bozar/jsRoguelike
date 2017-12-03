@@ -2,8 +2,8 @@
 /* global Game */
 
 Game.Glyph = function (character, foreground, background) {
-  // Anything that can appear on a map grid
-  this._character = character || ''
+  // Draw anything that can appear on a map grid
+  this._character = character || ' '
   this._foreground = foreground || 'white'
   this._background = background || 'black'
 }
