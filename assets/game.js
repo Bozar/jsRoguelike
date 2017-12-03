@@ -18,29 +18,23 @@ var Game = {
   _screenWidth: 80,
   _screenHeight: 20,
 
-  get getDisplay () { return this._display },
   get getDevelop () { return this._develop },
-  get getCurrentScreen () { return this._currentScreen },
-  get getScreenWidth () { return this._screenWidth },
-  get getScreenHeight () { return this._screenHeight },
 
-  set setDevelop (develop) { this._develop = develop },
-  set setDisplay (display) { this._display = display },
-  set setCurrentScreen (currentScreen) { this._currentScreen = currentScreen }
+  set setDevelop (develop) { this._develop = develop }
 }
 
 Game.init = function () {
   // update object: _display <-- blank canvas
   // listen events: keyboard
-  this.setDisplay = new ROT.Display({
-    width: Game.getScreenWidth,
-    height: Game.getScreenHeight
+  this._display = new ROT.Display({
+    width: Game._screenWidth,
+    height: Game._screenHeight
   })
   let tmpObject = this
   function bindEventToScreen (eventType) {
     window.addEventListener(eventType, function (event) {
-      if (tmpObject.getCurrentScreen !== null) {
-        tmpObject.getCurrentScreen.handleInput(eventType, event)
+      if (tmpObject._currentScreen !== null) {
+        tmpObject._currentScreen.handleInput(eventType, event)
       }
     })
   }
@@ -51,15 +45,17 @@ Game.init = function () {
 
 Game.switchScreen = function (screen) {
   // exit old screen
-  if (this.getCurrentScreen !== null) {
-    this.getCurrentScreen.exit()
+  if (this._currentScreen !== null) {
+    this._currentScreen.exit()
+    this._currentScreen.informExit()
   }
-  this.getDisplay.clear()
+  this._display.clear()
   // draw new screen
-  this.setCurrentScreen = screen
-  if (this.getCurrentScreen !== null) {
-    this.getCurrentScreen.enter()
-    this.getCurrentScreen.render(this._display)
+  this._currentScreen = screen
+  if (this._currentScreen !== null) {
+    this._currentScreen.enter()
+    this._currentScreen.render(this._display)
+    this._currentScreen.informEnter()
   }
 }
 
@@ -74,6 +70,6 @@ window.onload = function () {
   }
 
   Game.init()
-  document.body.appendChild(Game.getDisplay.getContainer())
+  document.body.appendChild(Game._display.getContainer())
   Game.switchScreen(Game.Screen.startScreen)
 }
