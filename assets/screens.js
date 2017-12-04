@@ -62,12 +62,39 @@ Game.Screen.playScreen.createCellularCave = function (mapArray) {
   }, boolFloorIsCell)
   return mapArray
 }
+
 Game.Screen.playScreen.moveScreenCenter = function (dX, dY) {
   // 0 <= center.x + dX <= map.width
   this._centerX = Math.max(0, this._centerX + dX)
   this._centerX = Math.min(this._centerX, this._map.getWidth() - 1)
   this._centerY = Math.max(0, this._centerY + dY)
   this._centerY = Math.min(this._centerY, this._map.getHeight() - 1)
+}
+Game.Screen.playScreen.getTopLeftCoordinate = function () {
+  /**
+     * map: a big square or rectangle in the fixed position
+     * screen: a small, moving window
+     *
+     * use this equation to get screen.left:
+     *  screen.left + screen.width/2 = screen.center
+     *
+     * boundary condition: screen moves out of the window
+     *  0 <= screen.left <= map.width - screen.width
+     *  <==> screen.left = max((screen.center - screen.width/2), 0)
+     *  <==> screen.left = min(screen.left, (map.width - screen.width))
+     */
+
+  let topLeftX = 0
+  topLeftX = this._centerX - Game.getScreenWidth / 2
+  topLeftX = Math.max(0, topLeftX)
+  topLeftX = Math.min(topLeftX, this._map.getWidth() - Game.getScreenWidth)
+
+  let topLeftY = 0
+  topLeftY = this._centerY - Game.getScreenHeight / 2
+  topLeftY = Math.max(0, topLeftY)
+  topLeftY = Math.min(topLeftY, this._map.getHeight() - Game.getScreenHeight)
+
+  return [topLeftX, topLeftY]
 }
 
 Game.Screen.playScreen.enter = function () {
@@ -76,25 +103,15 @@ Game.Screen.playScreen.enter = function () {
   this._map = new Game.Map(map)
 }
 Game.Screen.playScreen.render = function (display) {
-  /**
-   * map: a big square or rectangle in the fixed position
-   * screen: a small, moving window
-   *
-   * use this equation to get screen.left:
-   *  screen.left + screen.width/2 = screen.center
-   *
-   * boundary condition: screen moves out of the window
-   *  left boundary:
-   *    screen.left >= 0
-   *    <==> screen.left = max((screen.center - screen.width/2), 0)
-   *  right boundary:
-   *    screen.left + screen.width <= map.width
-   *    <==> screen.left = min(screen.left, (map,width - screen.width))
-   */
-  for (let x = 0; x < this._map.getWidth(); x++) {
-    for (let y = 0; y < this._map.getHeight(); y++) {
+  let topLeftCoordinate = Game.Screen.playScreen.getTopLeftCoordinate()
+  let topLeftX = topLeftCoordinate[0]
+  let topLeftY = topLeftCoordinate[1]
+
+  for (let x = topLeftX; x < topLeftX + Game.getScreenWidth; x++) {
+    for (let y = topLeftY; y < topLeftY + Game.getScreenHeight; y++) {
       let glyph = this._map.getTile(x, y).getGlyph()
-      display.draw(x, y,
+      display.draw(
+        x - topLeftX, y - topLeftY,
         glyph.getCharacter(), glyph.getForeground(), glyph.getBackground())
     }
   }
