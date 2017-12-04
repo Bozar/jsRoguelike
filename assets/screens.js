@@ -33,6 +33,8 @@ Game.Screen.startScreen.handleInput = function (eventType, inputKey) {
 
 Game.Screen.playScreen = new Game.Screen('play')
 Game.Screen.playScreen._map = null
+Game.Screen.playScreen._centerX = 0
+Game.Screen.playScreen._centerY = 0
 
 Game.Screen.playScreen.create2DArray = function () {
   let map = []
@@ -60,6 +62,13 @@ Game.Screen.playScreen.createCellularCave = function (mapArray) {
   }, boolFloorIsCell)
   return mapArray
 }
+Game.Screen.playScreen.moveScreenCenter = function (dX, dY) {
+  // 0 <= center.x + dX <= map.width
+  this._centerX = Math.max(0, this._centerX + dX)
+  this._centerX = Math.min(this._centerX, this._map.getWidth() - 1)
+  this._centerY = Math.max(0, this._centerY + dY)
+  this._centerY = Math.min(this._centerY, this._map.getHeight() - 1)
+}
 
 Game.Screen.playScreen.enter = function () {
   let map = Game.Screen.playScreen.create2DArray()
@@ -68,7 +77,7 @@ Game.Screen.playScreen.enter = function () {
 }
 Game.Screen.playScreen.render = function (display) {
   /**
-   * map: a big square in the fixed position
+   * map: a big square or rectangle in the fixed position
    * screen: a small, moving window
    *
    * use this equation to get screen.left:
@@ -105,6 +114,20 @@ Game.Screen.playScreen.handleInput = function (eventType, inputKey) {
       case 'Space':
         Game.switchScreen(Game.Screen.playScreen)
         break
+
+      case 'ArrowLeft':
+        Game.Screen.playScreen.moveScreenCenter(-1, 0)
+        break
+      case 'ArrowRight':
+        Game.Screen.playScreen.moveScreenCenter(1, 0)
+        break
+      case 'ArrowUp':
+        Game.Screen.playScreen.moveScreenCenter(0, 1)
+        break
+      case 'ArrowDown':
+        Game.Screen.playScreen.moveScreenCenter(0, -1)
+        break
+
       default:
         this.informText('Incorrect key: ' + inputKey.code)
         break
