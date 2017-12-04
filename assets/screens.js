@@ -21,6 +21,7 @@ Game.Screen.startScreen.render = function (display) {
   display.drawText(1, 1, '%c{yellow}Roguelike Javascript')
   display.drawText(1, 2, 'Press [Enter]')
 }
+
 Game.Screen.startScreen.handleInput = function (eventType, inputKey) {
   if (eventType === 'keydown') {
     if (inputKey.code === 'Enter') {
@@ -46,6 +47,7 @@ Game.Screen.playScreen.create2DArray = function () {
   }
   return map
 }
+
 Game.Screen.playScreen.createCellularCave = function (mapArray) {
   let generator = new ROT.Map.Cellular(Game.getMapWidth, Game.getMapHeight)
   generator.randomize(Game.getCellSurvive)
@@ -70,6 +72,7 @@ Game.Screen.playScreen.moveScreenCenter = function (dX, dY) {
   this._centerY = Math.max(0, this._centerY + dY)
   this._centerY = Math.min(this._centerY, this._map.getHeight() - 1)
 }
+
 Game.Screen.playScreen.getTopLeftCoordinate = function () {
   /**
      * map: a big square or rectangle in the fixed position
@@ -102,6 +105,7 @@ Game.Screen.playScreen.enter = function () {
   map = Game.Screen.playScreen.createCellularCave(map)
   this._map = new Game.Map(map)
 }
+
 Game.Screen.playScreen.render = function (display) {
   let topLeftCoordinate = Game.Screen.playScreen.getTopLeftCoordinate()
   let topLeftX = topLeftCoordinate[0]
@@ -115,10 +119,14 @@ Game.Screen.playScreen.render = function (display) {
         glyph.getCharacter(), glyph.getForeground(), glyph.getBackground())
     }
   }
+  display.draw(
+    this._centerX - topLeftX, this._centerY - topLeftY,
+    Game.Tile.characterTile.getGlyph().getCharacter())
   this.informText('Map drawn')
   this.informText('Press [Enter] to win')
   this.informText('Press [Esc] to lose')
 }
+
 Game.Screen.playScreen.handleInput = function (eventType, inputKey) {
   if (eventType === 'keydown') {
     switch (inputKey.code) {

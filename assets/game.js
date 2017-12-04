@@ -41,6 +41,13 @@ Game.convertBoolToNum = function (boolValue) {
   return boolValue === true ? 1 : 0
 }
 
+Game.redrawScreen = function () {
+  if (this._currentScreen !== null) {
+    this._display.clear()
+    this._currentScreen.render(this._display)
+  }
+}
+
 Game.init = function () {
   // update object: _display <-- blank canvas
   // listen events: keyboard
@@ -53,6 +60,7 @@ Game.init = function () {
     window.addEventListener(eventType, function (event) {
       if (tmpObject._currentScreen !== null) {
         tmpObject._currentScreen.handleInput(eventType, event)
+        Game.redrawScreen()
       }
     })
   }
