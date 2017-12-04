@@ -122,16 +122,17 @@ Game.Screen.playScreen.handleInput = function (eventType, inputKey) {
         Game.Screen.playScreen.moveScreenCenter(1, 0)
         break
       case 'ArrowUp':
-        Game.Screen.playScreen.moveScreenCenter(0, 1)
+        Game.Screen.playScreen.moveScreenCenter(0, -1)
         break
       case 'ArrowDown':
-        Game.Screen.playScreen.moveScreenCenter(0, -1)
+        Game.Screen.playScreen.moveScreenCenter(0, 1)
         break
 
       default:
         this.informText('Incorrect key: ' + inputKey.code)
         break
     }
+    // this.informText('Cursor: ' + this._centerX + ', ' + this._centerY)
   }
 }
 
