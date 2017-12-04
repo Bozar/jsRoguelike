@@ -36,16 +36,16 @@ Game.Screen.playScreen._map = null
 
 Game.Screen.playScreen.create2DArray = function () {
   let map = []
-  for (let x = 0; x < Game.getScreenWidth; x++) {
+  for (let x = 0; x < Game.getMapWidth; x++) {
     map.push([])
-    for (let y = 0; y < Game.getScreenHeight; y++) {
+    for (let y = 0; y < Game.getMapHeight; y++) {
       map[x].push(Game.Tile.nullTile)
     }
   }
   return map
 }
 Game.Screen.playScreen.createCellularCave = function (mapArray) {
-  let generator = new ROT.Map.Cellular(Game.getScreenWidth, Game.getScreenHeight)
+  let generator = new ROT.Map.Cellular(Game.getMapWidth, Game.getMapHeight)
   generator.randomize(Game.getCellSurvive)
   for (let i = 0; i < Game.getCellIterations; i++) {
     generator.create()
@@ -74,7 +74,7 @@ Game.Screen.playScreen.render = function (display) {
    * use this equation to get screen.left:
    *  screen.left + screen.width/2 = screen.center
    *
-   * boundary condition: screen move out of the window
+   * boundary condition: screen moves out of the window
    *  left boundary:
    *    screen.left >= 0
    *    <==> screen.left = max((screen.center - screen.width/2), 0)

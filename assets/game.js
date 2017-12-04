@@ -17,6 +17,8 @@ var Game = {
   // methods: enter, exit, render, handleInput
   _screenWidth: 80,
   _screenHeight: 20,
+  _mapWidth: 200,
+  _mapHeight: 200,
   _cellIterations: 4,
   _cellSurvive: 0.5,
   // _floorIsCell: true,
@@ -28,6 +30,8 @@ var Game = {
   },
   get getScreenWidth () { return this._screenWidth },
   get getScreenHeight () { return this._screenHeight },
+  get getMapWidth () { return this._mapWidth },
+  get getMapHeight () { return this._mapHeight },
   get getCellIterations () { return this._cellIterations },
   get getCellSurvive () { return this._cellSurvive },
   get getFloorIsCell () { return this._floorIsCell }
