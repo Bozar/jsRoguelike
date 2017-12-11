@@ -19,3 +19,8 @@ Game.Mixins.Movealbe = {
     }
   }
 }
+
+Game.PlayerTemplate = {
+  character: '@',
+  mixins: [Game.Mixins.Movealbe]
+}
