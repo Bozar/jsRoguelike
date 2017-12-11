@@ -1,11 +1,12 @@
 'use strict'
 /* global Game */
 
-Game.Glyph = function (character, foreground, background) {
+Game.Glyph = function (properties) {
   // Draw anything that can appear on a map grid
-  this._character = character || ' '
-  this._foreground = foreground || 'white'
-  this._background = background || 'black'
+  properties = properties || {}
+  this._character = properties.character || ' '
+  this._foreground = properties.foreground || 'white'
+  this._background = properties.background || 'black'
 }
 
 Game.Glyph.prototype.getCharacter = function () { return this._character }
