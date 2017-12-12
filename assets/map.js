@@ -1,5 +1,5 @@
 'use strict'
-/* global Game x y */
+/* global Game */
 
 Game.Map = function (tiles) {
   // tiles: 2D array, [[column 1], [column 2], ...]
@@ -8,7 +8,7 @@ Game.Map = function (tiles) {
   this._height = tiles[0].length
 }
 
-Game.Map.prototype.dig = function () {
+Game.Map.prototype.dig = function (x, y) {
   if (this.getTile(x, y).isDiggable()) {
     this._tiles[x][y] = Game.Tile.floorTile
   }
