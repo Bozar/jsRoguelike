@@ -8,7 +8,7 @@ Game.Map = function (tiles) {
   this._height = tiles[0].length
 }
 
-Game.Map.prototype.dig = function () {
+Game.Map.prototype.dig = function (x, y) {
   if (this.getTile(x, y).isDiggable()) {
     this._tiles[x][y] = Game.Tile.floorTile
   }
