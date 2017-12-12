@@ -89,12 +89,12 @@ Game.Screen.playScreen.getTopLeftCoordinate = function () {
      */
 
   let topLeftX = 0
-  topLeftX = this._centerX - Game.getScreenWidth / 2
+  topLeftX = this._player.getX() - Game.getScreenWidth / 2
   topLeftX = Math.max(0, topLeftX)
   topLeftX = Math.min(topLeftX, this._map.getWidth() - Game.getScreenWidth)
 
   let topLeftY = 0
-  topLeftY = this._centerY - Game.getScreenHeight / 2
+  topLeftY = this._player.getY() - Game.getScreenHeight / 2
   topLeftY = Math.max(0, topLeftY)
   topLeftY = Math.min(topLeftY, this._map.getHeight() - Game.getScreenHeight)
 
@@ -126,8 +126,8 @@ Game.Screen.playScreen.render = function (display) {
     }
   }
   display.draw(
-    this._centerX - topLeftX, this._centerY - topLeftY,
-    Game.Tile.playerTile.getGlyph().getCharacter()
+    this._player.getX() - topLeftX, this._player.getY() - topLeftY,
+    this._player.getCharacter()
   )
   this.informText('Map drawn')
   this.informText('Press [Enter] to win')
