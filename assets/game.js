@@ -55,11 +55,11 @@ Game.init = function () {
     width: Game._screenWidth,
     height: Game._screenHeight
   })
-  let tmpObject = this
+  let that = this
   function bindEventToScreen (eventType) {
     window.addEventListener(eventType, function (event) {
-      if (tmpObject._currentScreen !== null) {
-        tmpObject._currentScreen.handleInput(eventType, event)
+      if (that._currentScreen !== null) {
+        that._currentScreen.handleInput(eventType, event)
         Game.redrawScreen()
       }
     })
