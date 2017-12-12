@@ -34,8 +34,9 @@ Game.Screen.startScreen.handleInput = function (eventType, inputKey) {
 
 Game.Screen.playScreen = new Game.Screen('play')
 Game.Screen.playScreen._map = null
-Game.Screen.playScreen._centerX = 0
-Game.Screen.playScreen._centerY = 0
+Game.Screen.playScreen._player = null
+// Game.Screen.playScreen._centerX = 0
+// Game.Screen.playScreen._centerY = 0
 
 Game.Screen.playScreen.create2DArray = function () {
   let map = []
@@ -104,6 +105,10 @@ Game.Screen.playScreen.enter = function () {
   let map = Game.Screen.playScreen.create2DArray()
   map = Game.Screen.playScreen.createCellularCave(map)
   this._map = new Game.Map(map)
+  this._player = new Game.Entity(Game.PlayerTemplate)
+  let startPosition = this._map.getRandomFloorPosition()
+  this._player.setX(startPosition.x)
+  this._player.setY(startPosition.y)
 }
 
 Game.Screen.playScreen.render = function (display) {
@@ -116,12 +121,14 @@ Game.Screen.playScreen.render = function (display) {
       let glyph = this._map.getTile(x, y).getGlyph()
       display.draw(
         x - topLeftX, y - topLeftY,
-        glyph.getCharacter(), glyph.getForeground(), glyph.getBackground())
+        glyph.getCharacter(), glyph.getForeground(), glyph.getBackground()
+      )
     }
   }
   display.draw(
     this._centerX - topLeftX, this._centerY - topLeftY,
-    Game.Tile.characterTile.getGlyph().getCharacter())
+    Game.Tile.playerTile.getGlyph().getCharacter()
+  )
   this.informText('Map drawn')
   this.informText('Press [Enter] to win')
   this.informText('Press [Esc] to lose')
