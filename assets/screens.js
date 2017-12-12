@@ -68,10 +68,13 @@ Game.Screen.playScreen.createCellularCave = function (mapArray) {
 
 Game.Screen.playScreen.moveScreenCenter = function (dX, dY) {
   // 0 <= center.x + dX <= map.width
-  this._centerX = Math.max(0, this._centerX + dX)
-  this._centerX = Math.min(this._centerX, this._map.getWidth() - 1)
-  this._centerY = Math.max(0, this._centerY + dY)
-  this._centerY = Math.min(this._centerY, this._map.getHeight() - 1)
+  // this._centerX = Math.max(0, this._centerX + dX)
+  // this._centerX = Math.min(this._centerX, this._map.getWidth() - 1)
+  // this._centerY = Math.max(0, this._centerY + dY)
+  // this._centerY = Math.min(this._centerY, this._map.getHeight() - 1)
+  let newX = this._player.getX() + dX
+  let newY = this._player.getY() + dY
+  this._player.tryMove(newX, newY, this._map)
 }
 
 Game.Screen.playScreen.getTopLeftCoordinate = function () {
@@ -118,10 +121,11 @@ Game.Screen.playScreen.render = function (display) {
 
   for (let x = topLeftX; x < topLeftX + Game.getScreenWidth; x++) {
     for (let y = topLeftY; y < topLeftY + Game.getScreenHeight; y++) {
-      let glyph = this._map.getTile(x, y).getGlyph()
+      // let glyph = this._map.getTile(x, y).getGlyph()
+      let tile = this._map.getTile(x, y)
       display.draw(
         x - topLeftX, y - topLeftY,
-        glyph.getCharacter(), glyph.getForeground(), glyph.getBackground()
+        tile.getCharacter(), tile.getForeground(), tile.getBackground()
       )
     }
   }
