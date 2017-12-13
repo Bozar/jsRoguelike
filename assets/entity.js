@@ -1,6 +1,9 @@
 'use strict'
 /* global Game */
 
+// Functions:
+// Create: a constructor for non-enviroment blocks
+
 Game.Entity = function (properties) {
   properties = properties || {}
   Game.Glyph.call(this, properties)

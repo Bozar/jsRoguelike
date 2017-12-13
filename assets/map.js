@@ -1,6 +1,9 @@
 'use strict'
 /* global Game */
 
+// Functions:
+// Create: a two-dimension array filled with 0s and 1s
+
 Game.Map = function (tiles) {
   // tiles: 2D array, [[column 1], [column 2], ...]
   this._tiles = tiles

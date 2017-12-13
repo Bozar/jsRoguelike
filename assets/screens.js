@@ -1,6 +1,11 @@
 'use strict'
 /* global ROT, Game */
 
+// Functions:
+// Communicate:
+//    player's input --> Game.Screen --> process the game data
+//    redraw the screen <-- Game.Screen <-- new game data
+
 Game.Screen = function (screenType) {
   this._screenType = screenType
 }

@@ -1,6 +1,9 @@
 'use strict'
 /* global Game */
 
+// Functions:
+// Create: non-enviroment blocks and related mixins
+
 Game.Mixins = {}
 
 Game.Mixins.Movealbe = {

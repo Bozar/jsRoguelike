@@ -1,6 +1,9 @@
 'use strict'
 /* global Game */
 
+// Functions:
+// Draw: anything that appears on the map
+
 Game.Glyph = function (properties) {
   // Draw anything that can appear on a map grid
   properties = properties || {}

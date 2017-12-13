@@ -1,6 +1,9 @@
 'use strict'
 /* global Game */
 
+// Functions:
+// Create: environment blocks
+
 Game.Tile = function (properties) {
   // A map grid and things on it
   properties = properties || {}

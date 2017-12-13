@@ -9,6 +9,10 @@
  * https://stackoverflow.com/a/3955124
  */
 
+// Functions:
+// Store: 'global' properties
+// Control: Game.Screen
+
 var Game = {
   _develop: true,
   _display: null,
