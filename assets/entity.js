@@ -21,6 +21,7 @@ Game.Entity = function (properties) {
   this._attachedMixins = {
     // mixinName: true
   }
+  this._attachedMixinGroups = {}
   let mixins = properties.mixins || []
   for (const mixinObject of mixins) {
     for (const key in mixinObject) {
@@ -29,6 +30,9 @@ Game.Entity = function (properties) {
       }
     }
     this._attachedMixins[mixinObject.name] = true
+    if (mixinObject.groupName) {
+      this._attachedMixinGroups[mixinObject.groupName] = true
+    }
     if (mixinObject.init) {
       mixinObject.init.call(this, properties)
     }
@@ -41,7 +45,7 @@ Game.Entity.prototype.hasMixin = function (check) {
   if (typeof check === 'object') {
     return this._attachedMixins[check.name]
   } else {
-    return this._attachedMixins[check]
+    return this._attachedMixins[check] || this._attachedMixinGroups[check]
   }
 }
 Game.Entity.prototype.getName = function () { return this._name }
