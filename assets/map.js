@@ -35,6 +35,18 @@ Game.Map.prototype.addEntity = function (entity) {
   }
 }
 
+Game.Map.prototype.removeEntity = function (entity) {
+  for (let i = 0; i < this._entities.length; i++) {
+    if (this._entities[i] === entity) {
+      this._entities.splice(i, 1)
+      break
+    }
+  }
+  if (entity.hasMixin('Actor')) {
+    this._scheduler.remove(entity)
+  }
+}
+
 Game.Map.prototype.getRandomFloorPosition = function () {
   let x, y
   do {
