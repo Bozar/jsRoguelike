@@ -46,10 +46,8 @@ Game.convertBoolToNum = function (boolValue) {
 }
 
 Game.redrawScreen = function () {
-  if (this._currentScreen !== null) {
-    this._display.clear()
-    this._currentScreen.render(this._display)
-  }
+  this._display.clear()
+  this._currentScreen.render(this._display)
 }
 
 Game.init = function () {
@@ -64,7 +62,7 @@ Game.init = function () {
     window.addEventListener(eventType, function (event) {
       if (that._currentScreen !== null) {
         that._currentScreen.handleInput(eventType, event)
-        Game.redrawScreen()
+        // Game.redrawScreen()
       }
     })
   }
@@ -84,7 +82,8 @@ Game.switchScreen = function (screen) {
   this._currentScreen = screen
   if (this._currentScreen !== null) {
     this._currentScreen.enter()
-    this._currentScreen.render(this._display)
+    // this._currentScreen.render(this._display)
+    Game.redrawScreen()
     this._currentScreen.informText('Enter screen')
   }
 }
