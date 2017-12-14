@@ -112,17 +112,21 @@ Game.Screen.playScreen.getTopLeftCoordinate = function () {
 Game.Screen.playScreen.enter = function () {
   let map = Game.Screen.playScreen.create2DArray()
   map = Game.Screen.playScreen.createCellularCave(map)
-  this._map = new Game.Map(map)
+
   this._player = new Game.Entity(Game.PlayerTemplate)
+  this._map = new Game.Map(map, this._player)
   let startPosition = this._map.getRandomFloorPosition()
   this._player.setX(startPosition.x)
   this._player.setY(startPosition.y)
+
+  this._map.getEngine().start()
 }
 
 Game.Screen.playScreen.render = function (display) {
   let topLeftCoordinate = Game.Screen.playScreen.getTopLeftCoordinate()
   let topLeftX = topLeftCoordinate[0]
   let topLeftY = topLeftCoordinate[1]
+  let entities = this._map.getEntities()
 
   for (let x = topLeftX; x < topLeftX + Game.getScreenWidth; x++) {
     for (let y = topLeftY; y < topLeftY + Game.getScreenHeight; y++) {
@@ -134,10 +138,25 @@ Game.Screen.playScreen.render = function (display) {
       )
     }
   }
-  display.draw(
-    this._player.getX() - topLeftX, this._player.getY() - topLeftY,
-    this._player.getCharacter()
-  )
+
+  // display.draw(
+  //   this._player.getX() - topLeftX, this._player.getY() - topLeftY,
+  //   this._player.getCharacter()
+  // )
+
+  for (const i of entities) {
+    if (i.getX() >= topLeftX && i.getX() < topLeftX + Game.getScreenWidth &&
+      i.getY() >= topLeftY && i.getY() < topLeftY + Game.getScreenHeight) {
+      display.draw(
+        i.getX() - topLeftX,
+        i.getY() - topLeftY,
+        i.getCharacter(),
+        i.getForeground(),
+        i.getBackground()
+      )
+    }
+  }
+
   this.informText('Map drawn')
   this.informText('Press [Enter] to win')
   this.informText('Press [Esc] to lose')
@@ -173,6 +192,7 @@ Game.Screen.playScreen.handleInput = function (eventType, inputKey) {
         this.informText('Incorrect key: ' + inputKey.code)
         break
     }
+    this._map.getEngine().unlock()
     // this.informText('Cursor: ' + this._centerX + ', ' + this._centerY)
   }
 }
