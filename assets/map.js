@@ -13,7 +13,7 @@ Game.Map = function (tiles, player) {
   this._scheduler = new ROT.Scheduler.Simple()
   this._engine = new ROT.Engine(this._scheduler)
   this.addEntityAtRandomPosition(player)
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     this.addEntityAtRandomPosition(new Game.Entity(Game.FungusTemplate))
   }
 }
@@ -22,6 +22,11 @@ Game.Map.prototype.dig = function (x, y) {
   if (this.getTile(x, y).isDiggable()) {
     this._tiles[x][y] = Game.Tile.floorTile
   }
+}
+
+Game.Map.prototype.isEmptyFloor = function (x, y) {
+  return this.getTile[x][y] === Game.Tile.floorTile &&
+    !this.getEntityAt(x, y)
 }
 
 Game.Map.prototype.addEntity = function (entity) {
@@ -52,8 +57,7 @@ Game.Map.prototype.getRandomFloorPosition = function () {
   do {
     x = Math.floor(Math.random() * this._width)
     y = Math.floor(Math.random() * this._height)
-  } while (this.getTile(x, y) !== Game.Tile.floorTile ||
-    this.getEntityAt(x, y))
+  } while (!this.isEmptyFloor(x, y))
   return { x: x, y: y }
 }
 
