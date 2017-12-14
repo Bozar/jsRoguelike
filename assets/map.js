@@ -4,7 +4,7 @@
 // Functions:
 // Create: a two-dimension array filled with 0s and 1s
 
-Game.Map = function (tiles) {
+Game.Map = function (tiles, player) {
   // tiles: 2D array, [[column 1], [column 2], ...]
   this._tiles = tiles
   this._width = tiles.length
@@ -12,6 +12,10 @@ Game.Map = function (tiles) {
   this._entities = []
   this._scheduler = new ROT.Scheduler.Simple()
   this._engine = new ROT.Engine(this._scheduler)
+  this.addEntityAtRandomPosition(player)
+  for (let i = 0; i < 100; i++) {
+    this.addEntityAtRandomPosition(new Game.Entity(Game.FungusTemplate))
+  }
 }
 
 Game.Map.prototype.dig = function (x, y) {
@@ -20,13 +24,32 @@ Game.Map.prototype.dig = function (x, y) {
   }
 }
 
+Game.Map.prototype.addEntity = function (entity) {
+  if (entity.getX() >= 0 && entity.getX() <= this._width &&
+    entity.getY() >= 0 && entity.getY() <= this._height) {
+    entity.setMap(this)
+    this._entities.push(entity)
+    if (entity.hasMixin('Actor')) {
+      this._scheduler.add(entity, true)
+    }
+  }
+}
+
 Game.Map.prototype.getRandomFloorPosition = function () {
   let x, y
   do {
     x = Math.floor(Math.random() * this._width)
     y = Math.floor(Math.random() * this._height)
-  } while (this.getTile(x, y) !== Game.Tile.floorTile)
-  return {x: x, y: y}
+  } while (this.getTile(x, y) !== Game.Tile.floorTile ||
+    this.getEntityAt(x, y))
+  return { x: x, y: y }
+}
+
+Game.Map.prototype.addEntityAtRandomPosition = function (entity) {
+  let position = this.getRandomFloorPosition()
+  entity.setX(position.x)
+  entity.setY(position.y)
+  this.addEntity(entity)
 }
 
 Game.Map.prototype.getWidth = function () { return this._width }
