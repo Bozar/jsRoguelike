@@ -66,7 +66,22 @@ Game.Mixins.PlayerActor = {
 Game.Mixins.FungusActor = {
   name: 'FungusActor',
   groupName: 'Actor',
-  act: function () { }
+  init: function () {
+    this._growthsRemaining = 5
+  },
+  act: function () {
+    if (this._growthsRemaining > 0 && Math.random() < 0.2) {
+      let newX = this.getX() + Math.floor(Math.random() * 3 - 1)
+      let newY = this.getY() + Math.floor(Math.random() * 3 - 1)
+      if (this.isEmptyFloor(newX, newY)) {
+        let newFungus = new Game.Entity(Game.FungusTemplate)
+        newFungus.setX(newX)
+        newFungus.setY(newY)
+        this.map.addEntity(newFungus)
+        this._growthsRemaining--
+      }
+    }
+  }
 }
 
 Game.PlayerTemplate = {
