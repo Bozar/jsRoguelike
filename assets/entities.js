@@ -70,14 +70,14 @@ Game.Mixins.FungusActor = {
     this._growthsRemaining = 5
   },
   act: function () {
-    if (this._growthsRemaining > 0 && Math.random() < 0.2) {
+    if (this._growthsRemaining > 0 && Math.random() < 0.02) {
       let newX = this.getX() + Math.floor(Math.random() * 3 - 1)
       let newY = this.getY() + Math.floor(Math.random() * 3 - 1)
-      if (this.isEmptyFloor(newX, newY)) {
+      if (this.getMap().isEmptyFloor(newX, newY)) {
         let newFungus = new Game.Entity(Game.FungusTemplate)
         newFungus.setX(newX)
         newFungus.setY(newY)
-        this.map.addEntity(newFungus)
+        this.getMap().addEntity(newFungus)
         this._growthsRemaining--
       }
     }

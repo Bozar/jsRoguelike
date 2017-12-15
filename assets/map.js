@@ -25,7 +25,7 @@ Game.Map.prototype.dig = function (x, y) {
 }
 
 Game.Map.prototype.isEmptyFloor = function (x, y) {
-  return this.getTile[x][y] === Game.Tile.floorTile &&
+  return this.getTile(x, y) === Game.Tile.floorTile &&
     !this.getEntityAt(x, y)
 }
 
