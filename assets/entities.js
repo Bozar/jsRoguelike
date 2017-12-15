@@ -12,7 +12,12 @@ Game.Mixins.Movealbe = {
     let tile = map.getTile(x, y)
     let target = map.getEntityAt(x, y)
     if (target) {
-      return false
+      if (this.hasMixin('Attacker')) {
+        this.attack(target)
+        return true
+      } else {
+        return false
+      }
     } else if (tile.isWalkable()) {
       this._x = x
       this._y = y
@@ -22,6 +27,29 @@ Game.Mixins.Movealbe = {
       return true
     } else {
       return false
+    }
+  }
+}
+
+Game.Mixins.Destructible = {
+  name: 'Destructible',
+  init: function () {
+    this._hp = 1
+  },
+  takeDamage: function (attacker, damage) {
+    this._hp -= damage
+    if (this._hp <= 0) {
+      this.getMap().removeEntity(this)
+    }
+  }
+}
+
+Game.Mixins.SimpleAttacker = {
+  name: 'SimpleAttacker',
+  groupName: 'Attacker',
+  attack: function (target) {
+    if (target.hasMixin('Destructible')) {
+      target.takeDamage(this, 1)
     }
   }
 }
@@ -43,11 +71,15 @@ Game.Mixins.FungusActor = {
 
 Game.PlayerTemplate = {
   character: '@',
-  mixins: [Game.Mixins.Movealbe, Game.Mixins.PlayerActor]
+  mixins: [Game.Mixins.PlayerActor,
+    Game.Mixins.Movealbe,
+    Game.Mixins.Destructible,
+    Game.Mixins.SimpleAttacker]
 }
 
 Game.FungusTemplate = {
   character: 'F',
   foreground: 'green',
-  mixins: [Game.Mixins.FungusActor]
+  mixins: [Game.Mixins.FungusActor,
+    Game.Mixins.Destructible]
 }
